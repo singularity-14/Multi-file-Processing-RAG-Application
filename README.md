@@ -83,29 +83,3 @@ pip install -r requirements.txt
    ```
 
 ---
-
-### Updated `app.py` with LangSmith integration:
-
----
-
-```python
-from langsmith import LangSmithTracer
-
-# Initialize LangSmith monitoring
-tracer = LangSmithTracer()
-
-# Setting up LangSmith tracer in LangChain
-import langchain
-langchain.trace_with(tracer)
-
-# Continue with your existing app logic
-# All major events, such as file uploads, vector database updates, and model responses, will be logged and monitored via LangSmith.
-
-# File Processing, Chatbot logic as described earlier
-```
-
----
-
-### Notes:
-- **LangSmith API Key:** Ensure you have a valid LangSmith API key. Add it to your `.env` file to enable LangSmith monitoring.
-- **LangSmith Dashboard:** You can view all logs and metrics related to your app’s performance in the LangSmith dashboard.
