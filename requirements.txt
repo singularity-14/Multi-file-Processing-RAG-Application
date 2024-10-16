@@ -1,0 +1,13 @@
+python-dotenv==1.0.1
+pymupdf==1.24.9
+unstructured==0.15.9
+openpyxl==3.1.5
+python-pptx==1.0.2
+langchain-community==0.2.16
+langchain-core==0.2.38
+langchain-text-splitters==0.2.4
+langchain==0.2.16
+langchain-google-genai==1.0.10
+streamlit==1.35.0
+faiss-cpu
+sentence_transformers
