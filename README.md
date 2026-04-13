@@ -1,85 +1,156 @@
-## Multi-file Processing RAG Application
+# 📄 Multi-File Processing RAG Application
 
-This application processes uploaded files such as PDFs, Excel, PowerPoint, or CSV files, chunks the text, and stores it in a FAISS vector database for question-answering using LangChain and Google Generative AI.
+> A Retrieval-Augmented Generation (RAG) chatbot that lets users upload documents (PDF, Excel, PowerPoint, CSV) and ask natural language questions — powered by Google Gemini 1.5, LangChain, and FAISS vector search.
 
-### Features:
-- File processing for multiple formats: PDF, XLSX, PPTX, CSV
-- Embeddings and vector storage using FAISS
-- Question-answering based on uploaded files
-- Conversational interaction with a chatbot model (Google Generative AI)
-- Chunking and text splitting for efficient embedding
-- Integration with LangSmith for monitoring and logging the AI pipeline
+---
 
-### Dependencies:
-To install the dependencies, make sure you have Python 3.9 or higher. Use the following command to install the required packages:
+## 📌 Project Overview
 
+This application enables **conversational Q&A over your own documents**. Users upload files, the app intelligently chunks and embeds the content into a FAISS vector store, and then answers questions using Google's Gemini 1.5 model — all through a clean Streamlit chat interface.
+
+Built with production-readiness in mind: containerized via Docker and monitored via LangSmith.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|--------|-------------|
+| 📂 Multi-format support | Ingests PDF, XLSX, PPTX, and CSV files |
+| 🔍 Semantic search | FAISS vector store for fast, relevant document retrieval |
+| 🤖 Conversational AI | Google Gemini 1.5 powers context-aware responses |
+| ✂️ Smart chunking | Text splitting optimized for accurate embedding |
+| 📊 Pipeline monitoring | LangSmith integration for logging and observability |
+| 🐳 Dockerized | One-command deployment via Docker |
+
+---
+
+## 🚀 Tech Stack
+
+| Category | Tools |
+|----------|-------|
+| Language | Python 3.9+ |
+| LLM | Google Gemini 1.5 (via Google Generative AI) |
+| RAG Framework | LangChain |
+| Vector Database | FAISS |
+| Frontend | Streamlit |
+| Monitoring | LangSmith |
+| Containerization | Docker |
+
+---
+
+## 🏗️ Architecture
+
+```
+User uploads file (PDF / XLSX / PPTX / CSV)
+        ↓
+Text Extraction & Chunking
+        ↓
+Embedding Generation (Google Generative AI Embeddings)
+        ↓
+FAISS Vector Store (stored in-memory)
+        ↓
+User asks a question
+        ↓
+Semantic Retrieval → Gemini 1.5 → Conversational Response
+        ↓
+LangSmith logs interaction for monitoring
+```
+
+---
+
+## ⚙️ Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/<your-username>/multi-file-rag-app.git
+cd multi-file-rag-app
+```
+
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
+> Requires Python 3.9 or higher.
 
-### Usage:
+### 3. Configure environment variables
 
-1. **Environment Variables:**
-   Create a `.env` file with the following variables:
+Create a `.env` file in the root directory:
+```bash
+GOOGLE_API_KEY=<your-google-api-key>
+LANGCHAIN_API_KEY=<your-langchain-api-key>
+LANGCHAIN_ENDPOINT=<your-langchain-endpoint>
+LANGCHAIN_PROJECT=<your-project-name>
+LANGSMITH_API_KEY=<your-langsmith-api-key>
+```
 
-   ```bash
-   GOOGLE_API_KEY=<your-google-api-key>
-   LANGCHAIN_API_KEY=<your-langchain-api-key>
-   LANGCHAIN_ENDPOINT=<your-langchain-endpoint>
-   LANGCHAIN_PROJECT=<your-project-name>
-   LANGSMITH_API_KEY=<your-langsmith-api-key>
-   ```
-
-2. **File Upload:**
-   Upload PDF, Excel, PowerPoint, or CSV files using the file uploader in the sidebar. The files are then processed, chunked, and stored in a FAISS vector store.
-
-3. **Chat Interface:**
-   Ask questions in the chat interface. The system will use the stored vector database to retrieve the most relevant documents and generate a response using a conversational model (Google's Gemini 1.5).
-
-4. **LangSmith Monitoring:**
-   LangSmith is used to monitor the application’s performance and log interactions.
-
-   To enable LangSmith monitoring, ensure you have an API key and that it is set up in your `.env` file. The application will log and monitor all major interactions, including file processing, vector database updates, and model responses.
-
-5. **Run the Application:**
-
-   To run the app locally, use:
-
-   ```bash
-   streamlit run app.py
-   ```
-
-### Docker Setup:
-
-1. **Dockerfile**:
-   The provided Dockerfile helps you containerize the application.
-
-   ```Dockerfile
-   FROM python:3.9-slim
-
-   WORKDIR /app
-
-   COPY requirements.txt .
-
-   RUN pip install --no-cache-dir -r requirements.txt
-
-   COPY . .
-
-   EXPOSE 8501
-
-   CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-   ```
-
-2. **Build the Docker image:**
-
-   ```bash
-   docker build -t multi-file-processing-app .
-   ```
-
-3. **Run the Docker container:**
-
-   ```bash
-   docker run -p 8501:8501 multi-file-processing-app
-   ```
+### 4. Run the app
+```bash
+streamlit run app.py
+```
+Visit `http://localhost:8501` in your browser.
 
 ---
+
+## 🐳 Docker Deployment
+
+### Build the image
+```bash
+docker build -t multi-file-rag-app .
+```
+
+### Run the container
+```bash
+docker run -p 8501:8501 multi-file-rag-app
+```
+
+The app will be live at `http://localhost:8501`.
+
+<details>
+<summary>View Dockerfile</summary>
+
+```dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+</details>
+
+---
+
+## 📡 LangSmith Monitoring
+
+All key pipeline events are automatically logged to LangSmith, including:
+- File upload and text extraction
+- Vector store updates
+- Model queries and responses
+
+Ensure your `LANGSMITH_API_KEY` is set in `.env` to enable observability.
+
+---
+
+## 💡 Key Learnings & Takeaways
+
+- Designed and implemented a full **end-to-end RAG pipeline** from document ingestion to response generation
+- Explored **chunking strategies** and their impact on retrieval quality and embedding efficiency
+- Integrated **LLM observability** tooling (LangSmith) for production-grade monitoring
+- Containerized an ML application with Docker for **reproducible, portable deployment**
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+*An exploration of RAG architecture, LLM integration, and production ML deployment patterns.*
